@@ -286,7 +286,7 @@ if __name__ == '__main__':
     #     '唐家湾': '%u5510%u5BB6%u6E7E%2CPDQ',  # 唐家湾
     # }
     city_list = parse_station_name()
-    出发站
+    # 出发站
     from_input = st.text_input("请输入出发站，请输入完整站名（如广州南）")
     # 终点站
     to_input = st.text_input("请输入终点站，请输入完整站名（如唐家湾）")
