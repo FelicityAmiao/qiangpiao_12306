@@ -259,7 +259,7 @@ def parse_station_name():
                 code = split_station[2]
                 initial_key = split_station[4]
                 encode_name = convert_chinese_city_name(name, code)
-                city_list[initial_key] = encode_name
+                city_list[name] = encode_name
     except OSError:
         print("File not found")
     return city_list
@@ -274,22 +274,22 @@ if __name__ == '__main__':
     from_time = from_time_dt.strftime("%Y-%m-%d")
     # # 城市cookie字典
     # city_list = {
-    #     'bj': '%u5317%u4EAC%2CBJP',  # 北京
-    #     'hd': '%u5929%u6D25%2CTJP',  # 邯郸
-    #     'nn': '%u5357%u5B81%2CNNZ',  # 南宁
-    #     'wh': '%u6B66%u6C49%2CWHN',  # 武汉
-    #     'cs': '%u957F%u6C99%2CCSQ',  # 长沙
-    #     'ty': '%u592A%u539F%2CTYV',  # 太原
-    #     'yc': '%u8FD0%u57CE%2CYNV',  # 运城
-    #     'gzn': '%u5E7F%u5DDE%u5357%2CIZQ',  # 广州南
-    #     'wzn': '%u68A7%u5DDE%u5357%2CWBZ',  # 梧州南
-    #     'tjw': '%u5510%u5BB6%u6E7E%2CPDQ',  # 唐家湾
+    #     '北京': '%u5317%u4EAC%2CBJP',  # 北京
+    #     '邯郸': '%u5929%u6D25%2CTJP',  # 邯郸
+    #     '南宁': '%u5357%u5B81%2CNNZ',  # 南宁
+    #     '武汉': '%u6B66%u6C49%2CWHN',  # 武汉
+    #     '长沙': '%u957F%u6C99%2CCSQ',  # 长沙
+    #     '太原': '%u592A%u539F%2CTYV',  # 太原
+    #     '运城': '%u8FD0%u57CE%2CYNV',  # 运城
+    #     '广州南': '%u5E7F%u5DDE%u5357%2CIZQ',  # 广州南
+    #     '梧州南': '%u68A7%u5DDE%u5357%2CWBZ',  # 梧州南
+    #     '唐家湾': '%u5510%u5BB6%u6E7E%2CPDQ',  # 唐家湾
     # }
     city_list = parse_station_name()
-    # 出发站
-    from_input = st.text_input("请输入出发站，只需要输入首字母就行（例如北京“bj”）")
+    出发站
+    from_input = st.text_input("请输入出发站，请输入完整站名（如广州南）")
     # 终点站
-    to_input = st.text_input("请输入终点站，只需要输入首字母就行（例如北京“bj”）")
+    to_input = st.text_input("请输入终点站，请输入完整站名（如唐家湾）")
     # 乘车车次
     number_input = st.text_input('请输入抢票车次号，多车次用英文逗号“,”链接，（例如单车次“Z285”或者多车次“Z285,G110”）：')
     numbers = number_input.split(",")
