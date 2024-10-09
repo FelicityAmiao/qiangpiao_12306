@@ -10,7 +10,7 @@
 author: fely (original author: cuizy)
 time: 2024-10-08
 """
-
+import json
 import re
 from splinter.browser import Browser
 from time import sleep
@@ -240,6 +240,29 @@ class BrushTicket(object):
         s.login(sender, pwd)
         s.sendmail(sender, receiver, msg.as_string())
 
+def convert_chinese_city_name(city_name, code):
+    en_name = city_name.encode('unicode_escape')
+    str_data = str(en_name, 'utf-8')
+    str_data = str_data.upper().replace('\\U', '%u')
+    return str_data + "%2C" + code
+
+def parse_station_name():
+    fileName = 'station_name.json'
+    city_list = {}
+    try:
+        with open(fileName, 'r') as station_file:
+            station_info = json.load(station_file)
+            station_list = station_info['station_names'].split('|||')
+            for s in station_list:
+                split_station = s.split('|')
+                name = split_station[1]
+                code = split_station[2]
+                initial_key = split_station[4]
+                encode_name = convert_chinese_city_name(name, code)
+                city_list[initial_key] = encode_name
+    except OSError:
+        print("File not found")
+    return city_list
 
 if __name__ == '__main__':
     st.title("高铁抢票表单界面")
@@ -249,19 +272,20 @@ if __name__ == '__main__':
     # 乘车日期
     from_time_dt = st.date_input("请选择乘车日期", datetime.now())
     from_time = from_time_dt.strftime("%Y-%m-%d")
-    # 城市cookie字典
-    city_list = {
-        'bj': '%u5317%u4EAC%2CBJP',  # 北京
-        'hd': '%u5929%u6D25%2CTJP',  # 邯郸
-        'nn': '%u5357%u5B81%2CNNZ',  # 南宁
-        'wh': '%u6B66%u6C49%2CWHN',  # 武汉
-        'cs': '%u957F%u6C99%2CCSQ',  # 长沙
-        'ty': '%u592A%u539F%2CTYV',  # 太原
-        'yc': '%u8FD0%u57CE%2CYNV',  # 运城
-        'gzn': '%u5E7F%u5DDE%u5357%2CIZQ',  # 广州南
-        'wzn': '%u68A7%u5DDE%u5357%2CWBZ',  # 梧州南
-        'tjw': '%u5510%u5BB6%u6E7E%2CPDQ',  # 唐家湾
-    }
+    # # 城市cookie字典
+    # city_list = {
+    #     'bj': '%u5317%u4EAC%2CBJP',  # 北京
+    #     'hd': '%u5929%u6D25%2CTJP',  # 邯郸
+    #     'nn': '%u5357%u5B81%2CNNZ',  # 南宁
+    #     'wh': '%u6B66%u6C49%2CWHN',  # 武汉
+    #     'cs': '%u957F%u6C99%2CCSQ',  # 长沙
+    #     'ty': '%u592A%u539F%2CTYV',  # 太原
+    #     'yc': '%u8FD0%u57CE%2CYNV',  # 运城
+    #     'gzn': '%u5E7F%u5DDE%u5357%2CIZQ',  # 广州南
+    #     'wzn': '%u68A7%u5DDE%u5357%2CWBZ',  # 梧州南
+    #     'tjw': '%u5510%u5BB6%u6E7E%2CPDQ',  # 唐家湾
+    # }
+    city_list = parse_station_name()
     # 出发站
     from_input = st.text_input("请输入出发站，只需要输入首字母就行（例如北京“bj”）")
     # 终点站
